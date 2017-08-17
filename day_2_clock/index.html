@@ -13,9 +13,18 @@
 		</div>
 	</div>
 
+	<div class="digital">
+		<span class="hours"></span> :
+		<span class="minutes"></span> :
+		<span class="seconds"></span>
+	</div>
+
 <style>
 html{
+	background-color: blue;
 	text-align: center;
+	/*font-family: 'helvetica neue';*/
+	font-size: 10px;
 }
 
 body{
@@ -24,6 +33,10 @@ body{
 	flex: 1;
 	min-height: 100vh;
 	align-items: center;
+}
+.digital{
+	border: 1px solid black;
+	color: white;
 }
 
 .clock{
@@ -54,13 +67,71 @@ body{
 	background:black;
 	position: absolute;
 	top:50%;
-	transform-origin: 50%
+	transform-origin: 100%;
+	transform: rotate(90deg);
+	transition: all 0.05s;
+	transition-timing-function: cubic-bezier(0.1, 2.7, 0.58,1);
 }
 
 </style>
 
 
 <script>
+
+const secondHand = document.querySelector('.second-hand');
+const hourHand = document.querySelector('.hour-hand');
+const minuteHand = document.querySelector('.min-hand');
+
+const hourSpan = document.querySelector('.hours');
+const minuteSpan = document.querySelector('.minutes');
+const secondSpan = document.querySelector('.seconds');
+
+function setDate(){
+	const now = new Date();
+
+	const seconds = now.getSeconds();
+	if (seconds === 0){
+		secondHand.style.transition = '0s'
+	};
+	const secondsDegrees = ((seconds/60)*360) + 90
+	secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+	if (seconds < 10){
+		secondSpan.innerHTML = `0${seconds}`;
+	}else{
+		secondSpan.innerHTML = seconds;
+	}
+
+	const hours = now.getHours();
+	const hoursDegrees = (hours*30) + 90;
+	if (hours === 0){
+		hourHand.style.transition = '0s'
+	};
+	hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+	if (hours > 12){
+		hourSpan.innerHTML = `${Math.abs(12-hours)}`
+	}else if(hours < 10){
+		hourSpan.innerHTML = `0${hours}`;
+	}else{
+		hourSpan.innerHTML = hours;
+	}
+
+
+	const minutes = now.getMinutes();
+	const minutesDegrees = (minutes*6) + 90;
+	if (minutes === 0){
+		minuteHand.style.transition = '0s'
+	};
+	minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+	if (minutes < 10){
+		minuteSpan.innerHTML = `0${minutes}`;
+	}else{
+		minuteSpan.innerHTML = minutes;
+	}
+}
+
+
+
+setInterval(setDate,1000);
 	
 </script>
 </body>
