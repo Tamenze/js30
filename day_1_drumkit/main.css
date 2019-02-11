@@ -29,6 +29,25 @@ body,html {
   color: white;
   background: rgba(255,0,0,0.8);
   text-shadow: 0 0 .5rem black;
+  position: relative;
+}
+
+.key .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(0,0,0,.8);
+  color: white;
+  padding: 10px 5px;
+  border-radius: 6px;
+
+  z-index: 1;
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+}
+
+.key:hover .tooltiptext {
+  visibility: visible;
 }
 
 .playing{
