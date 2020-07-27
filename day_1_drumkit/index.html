@@ -1,92 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>DrumKit</title>
-	<link rel="stylesheet" href="main.css">
-</head>
-<body>
-	<div class="keys">
-		<div class="key" data-key="66">
-			<span class="tooltiptext">Use your keyboard to play.</span>
-			<kbd>B</kbd>
-			<span class="sound"></span>
-		</div>
-		<div class="key" data-key="79">
-			<span class="tooltiptext">Use your keyboard to play.</span>
-			<kbd>O</kbd>
-			<span class="sound"></span>
-		</div>
-		<div class="key" data-key="68">
-			<span class="tooltiptext">Use your keyboard to play.</span>
-			<kbd>D</kbd>
-			<span class="sound"></span>
-		</div>
-		<div class="key" data-key="69">
-			<span class="tooltiptext">Use your keyboard to play.</span>
-			<kbd>E</kbd>
-			<span class="sound"></span>
-		</div>
-		<div class="key" data-key="71">
-			<span class="tooltiptext">Use your keyboard to play.</span>
-			<kbd>G</kbd>
-			<span class="sound"></span>
-		</div>
-		<div class="key" data-key="65">
-			<span class="tooltiptext">Use your keyboard to play.</span>
-			<kbd>A</kbd>
-			<span class="sound"></span>
-		</div>					
-	</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>DrumKit</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div class="keys">
+      <div class="key" data-key="66">
+        <span class="tooltiptext">Use your keyboard to play.</span>
+        <kbd>B</kbd>
+        <span class="sound"></span>
+      </div>
+      <div class="key" data-key="79">
+        <span class="tooltiptext">Use your keyboard to play.</span>
+        <kbd>O</kbd>
+        <span class="sound"></span>
+      </div>
+      <div class="key" data-key="68">
+        <span class="tooltiptext">Use your keyboard to play.</span>
+        <kbd>D</kbd>
+        <span class="sound"></span>
+      </div>
+      <div class="key" data-key="69">
+        <span class="tooltiptext">Use your keyboard to play.</span>
+        <kbd>E</kbd>
+        <span class="sound"></span>
+      </div>
+      <div class="key" data-key="71">
+        <span class="tooltiptext">Use your keyboard to play.</span>
+        <kbd>G</kbd>
+        <span class="sound"></span>
+      </div>
+      <div class="key" data-key="65">
+        <span class="tooltiptext">Use your keyboard to play.</span>
+        <kbd>A</kbd>
+        <span class="sound"></span>
+      </div>
+    </div>
 
-	<audio data-key="66" src="sounds/livefromRB.mp3"></audio>
-	<audio data-key="79" src="sounds/intro.mp3"></audio>
-	<audio data-key="68" src="sounds/supernova.mp3"></audio>
-	<audio data-key="69" src="sounds/bumbaclots.mp3"></audio>
-	<audio data-key="71" src="sounds/xanman.mp3"></audio>
-	<audio data-key="65" src="sounds/grrt.mp3"></audio> 
+    <audio data-key="66" src="sounds/livefromRB.mp3"></audio>
+    <audio data-key="79" src="sounds/intro.mp3"></audio>
+    <audio data-key="68" src="sounds/supernova.mp3"></audio>
+    <audio data-key="69" src="sounds/bumbaclots.mp3"></audio>
+    <audio data-key="71" src="sounds/xanman.mp3"></audio>
+    <audio data-key="65" src="sounds/grrt.mp3"></audio>
 
-<script>
+    <script>
+      function playSound(e) {
+        // const audio = document.querySelector(`audio[data-key="${e.keyCode}" `);
+        // const key = document.querySelector(`.key[data-key="${e.keyCode}"`);
 
+        const audio = document.querySelector(
+          "audio[data-key='" + e.keyCode + "']"
+        );
+        const key = document.querySelector(
+          ".key[data-key='" + e.keyCode + "']"
+        );
 
-function playSound(e){
-	// const audio = document.querySelector(`audio[data-key="${e.keyCode}" `);
-	// const key = document.querySelector(`.key[data-key="${e.keyCode}"`);
+        if (!audio) return;
+        audio.currentTime = 0;
+        audio.play();
+        key.classList.add("playing");
+      }
 
-	const audio = document.querySelector("audio[data-key='" + e.keyCode + "']");
-	const key = document.querySelector(".key[data-key='"+ e.keyCode + "']");
+      function removeTransition(e) {
+        // console.log(e)
+        if (e.propertyName !== "transform") {
+          return;
+        } //skips transition if the one that occurred is not 'transform'
+        // console.log(this);
+        this.classList.remove("playing");
+        //this = current div with class 'key'
+        //removes playing class added when key hit
+      }
 
-	if(!audio) return;
-	audio.currentTime = 0;
-	audio.play();
-	key.classList.add('playing');
-}
+      window.addEventListener("keydown", playSound);
+      const keys = document.querySelectorAll(".key");
+      // keys.forEach(function(key){
+      // 	key.addEventListener('transitionend', removeTransition);
+      // })
 
-function removeTransition(e){
-	// console.log(e)
-	if (e.propertyName !== 'transform'){
-		return
-	};//skips transition if the one that occurred is not 'transform'
-	// console.log(this);
-	this.classList.remove('playing');
-	//this = current div with class 'key'
-	//removes playing class added when key hit
-}
-
-
-window.addEventListener('keydown', playSound);
-const keys = document.querySelectorAll('.key');
-// keys.forEach(function(key){
-// 	key.addEventListener('transitionend', removeTransition);
-// })
-
-for (var i = 0; i < keys.length; i++){
-	var x = keys[i];
-	x.addEventListener('transitionend', removeTransition);
-}
-
-</script>
-
-
-</body>
+      for (var i = 0; i < keys.length; i++) {
+        var x = keys[i];
+        x.addEventListener("transitionend", removeTransition);
+      }
+    </script>
+  </body>
 </html>
