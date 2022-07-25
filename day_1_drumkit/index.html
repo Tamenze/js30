@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>DrumKit</title>
+    <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"> -->
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
     <div class="keys">
+     
       <div class="key" data-key="66">
         <span class="tooltiptext">Use your keyboard to play.</span>
         <kbd>B</kbd>
@@ -48,9 +50,13 @@
 
     <script>
       function playSound(e) {
-        // const audio = document.querySelector(`audio[data-key="${e.keyCode}" `);
-        // const key = document.querySelector(`.key[data-key="${e.keyCode}"`);
 
+        //ensure the touchstart was on a letter
+        //set the keycode to be the data key value
+        if (e.type === "touchstart" && e.target.parentElement.attributes["data-key"]){
+          e.keyCode = Number(e.target.parentElement.attributes["data-key"].value)
+        }
+        
         const audio = document.querySelector(
           "audio[data-key='" + e.keyCode + "']"
         );
@@ -58,6 +64,7 @@
           ".key[data-key='" + e.keyCode + "']"
         );
 
+        //plays audio and adds active playing class 
         if (!audio) return;
         audio.currentTime = 0;
         audio.play();
@@ -65,26 +72,24 @@
       }
 
       function removeTransition(e) {
-        // console.log(e)
+        //returns without running if the transition that ended is not 'transform'
         if (e.propertyName !== "transform") {
           return;
-        } //skips transition if the one that occurred is not 'transform'
-        // console.log(this);
-        this.classList.remove("playing");
+        } 
         //this = current div with class 'key'
-        //removes playing class added when key hit
+        //removes 'playing' class, which removes yellow border 
+        this.classList.remove("playing");
       }
+
 
       window.addEventListener("keydown", playSound);
       const keys = document.querySelectorAll(".key");
-      // keys.forEach(function(key){
-      // 	key.addEventListener('transitionend', removeTransition);
-      // })
 
-      for (var i = 0; i < keys.length; i++) {
-        var x = keys[i];
-        x.addEventListener("transitionend", removeTransition);
-      }
+      keys.forEach((el) => {
+        el.addEventListener("touchstart", playSound);
+        el.addEventListener("transitionend", removeTransition);
+      })
+
     </script>
   </body>
 </html>

@@ -47,8 +47,10 @@ html {
   left: 50%;
 }
 
-.key:hover .tooltiptext {
-  visibility: visible;
+@media (hover: hover) {
+  .key:hover .tooltiptext {
+    visibility: visible;
+  }
 }
 
 .playing {
